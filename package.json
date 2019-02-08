@@ -1,0 +1,26 @@
+{
+  "name": "expressfinal",
+  "version": "1.0.0",
+  "description": "exmaple api with express",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "debug:dev": "set DEBUG=app:* && npm run dev"
+  },
+  "keywords": [
+    "api"
+  ],
+  "author": "AlexTex",
+  "license": "MIT",
+  "devDependencies": {
+    "debug": "^4.1.1",
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "mongodb": "^3.1.13"
+  }
+}
