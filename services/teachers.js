@@ -9,10 +9,9 @@ class Teachers
     this.collection = "maestros"
   }
 
-  async getTeachers({tags})
+  async getTeachers()
   {
-    const query = tags && {tags : {$in : tags}}
-    const teachers = await this.mongo.getAll(this.collection,query)
+    const teachers = await this.mongo.getAll(this.collection)
     return teachers || []
   }
 

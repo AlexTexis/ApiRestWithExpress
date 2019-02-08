@@ -1,20 +1,20 @@
 const express = require('express')
 const services = require('../../services/teachers')
 const serviceTeachers = new services()
-const debug = require('debug')('app:request')
-
 const router = express.Router()
+
+const { idSchema,bodySchema} = require('../../utils/schemas/schemas')
+const validation = require('../../utils/middlewares/validateDataHandler')
 
 router.get('/',async (req,res,next) => 
 {
-  const { tags } = req.query
+
   try 
   {
-    const teachers = await serviceTeachers.getTeachers({tags})
-    
+    const teachers = await serviceTeachers.getTeachers()
     res.status(200).json({
-      payload:teachers,
-      message:"maestros obtenidos"
+      payload : teachers,
+      message : 'maestros obtenidos'
     })
   }
   catch(err)
@@ -23,7 +23,7 @@ router.get('/',async (req,res,next) =>
   }
 })
 
-router.get('/:id',async (req,res,next) => 
+router.get('/:id',validation({id : idSchema},'params'),async (req,res,next) => 
 {
   const { id } = req.params
   try 
@@ -40,15 +40,15 @@ router.get('/:id',async (req,res,next) =>
   }
 })
 
-router.post('/',async (req,res,next) => 
+router.post('/',validation(bodySchema),async (req,res,next) => 
 {
   const { body } = req
   try 
   {
     const newTechaer = await serviceTeachers.createTeacher({body})
     res.status(201).json({
-      payload:newTechaer,
-      message:"maestro nuevo"
+      payload : newTechaer,
+      message : 'maestro nuevo'
     })
   }
   catch(err)
