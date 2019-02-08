@@ -1,12 +1,15 @@
 const express = require('express')
 const services = require('../../services/teachers')
 const serviceTeachers = new services()
+const passport = require('passport')
 const router = express.Router()
 
 const { idSchema,bodySchema} = require('../../utils/schemas/schemas')
 const validation = require('../../utils/middlewares/validateDataHandler')
 
-router.get('/',async (req,res,next) => 
+require('../../utils/auth-strategies/jwt')
+
+router.get('/',passport.authenticate('jwt',{session:false}),async (req,res,next) => 
 {
 
   try 
