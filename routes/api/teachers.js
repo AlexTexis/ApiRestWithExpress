@@ -1,16 +1,18 @@
 const express = require('express')
 const services = require('../../services/teachers')
-const serviceTeachers = new services()
 const passport = require('passport')
-const { idSchema,createSchema,updateSchema} = require('../../utils/schemas/schemas')
 const validation = require('../../utils/middlewares/validateDataHandler')
+const cacheResponse = require('../../utils/cacheResponse')
+const timeCache = require('../../utils/timeCacheResponse')
+const serviceTeachers = new services()
+const { idSchema,createSchema,updateSchema} = require('../../utils/schemas/schemas')
 const router = express.Router()
 
 require('../../utils/auth-strategies/jwt')
 
 router.get('/',passport.authenticate('jwt',{session:false}),async (req,res,next) => 
 {
-
+  cacheResponse(res,timeCache)
   try 
   {
     const teachers = await serviceTeachers.getTeachers()
@@ -27,6 +29,7 @@ router.get('/',passport.authenticate('jwt',{session:false}),async (req,res,next)
 
 router.get('/:id',passport.authenticate('jwt',{session:false}),validation({id : idSchema},'params'),async (req,res,next) => 
 {
+  cacheResponse(res,timeCache)
   const { id } = req.params
   try 
   { 
@@ -44,6 +47,7 @@ router.get('/:id',passport.authenticate('jwt',{session:false}),validation({id : 
 
 router.post('/',passport.authenticate('jwt',{session:false}),validation(createSchema),async (req,res,next) => 
 {
+  cacheResponse(res,timeCache)
   const { body } = req
   try 
   {
@@ -61,6 +65,7 @@ router.post('/',passport.authenticate('jwt',{session:false}),validation(createSc
 
 router.put('/:id',passport.authenticate('jwt',{session:false}),validation({id : idSchema},'params'),validation(updateSchema),async (req,res,next) => 
 {
+  cacheResponse(res,timeCache)
   const { id } = req.params
   const { body } = req
 
@@ -80,6 +85,7 @@ router.put('/:id',passport.authenticate('jwt',{session:false}),validation({id : 
 
 router.delete('/:id',passport.authenticate('jwt',{session:false}),validation({id : idSchema},'params'),async (req,res,next) => 
 {
+  cacheResponse(res,timeCache)
   const { id } = req.params
   try 
   {

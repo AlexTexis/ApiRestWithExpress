@@ -3,16 +3,17 @@ const debug = require('debug')('app:server')
 const bodyParser = require('body-parser')
 const apiTeachers = require('./routes/api/teachers')
 const apiAuth = require('./routes/api/auth')
-const {logErrors,wrapError,clientErrorHandler,errorHandler} = require('./utils/middlewares/validateErrorHandler')
 const isRequestAjaxOrApi = require('./utils/middlewares/isRequestAjaxOrApi')
 const boom = require('boom')
+const helmet = require('helmet')
+const {logErrors,wrapError,clientErrorHandler,errorHandler} = require('./utils/middlewares/validateErrorHandler')
 
-//app instance
+//app 
 const app = express()
 
 //middlewares
 app.use(bodyParser.json())
-
+app.use(helmet())
 
 //routes (API)
 app.use('/api/teachers',apiTeachers)
@@ -25,10 +26,11 @@ app.use((req,res,next) => {
     const {output : {statusCode,payload}} = boom.notFound()
     res.status(statusCode).json(payload)
   }
-
+  
   res.status(404)
 })
 
+//error handlers
 app.use(logErrors)
 app.use(wrapError)
 app.use(clientErrorHandler)
