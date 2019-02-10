@@ -10,7 +10,7 @@ passport.use(
     try 
     {
       const mongo = new mongoLib()
-        const user = await mongo.getAll('users',{username})
+        const [user] = await mongo.getAll('users',{username})
 
         if(!user)
         {

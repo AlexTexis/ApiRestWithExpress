@@ -2,7 +2,7 @@ const express = require('express')
 const services = require('../../services/teachers')
 const serviceTeachers = new services()
 const passport = require('passport')
-const { idSchema,bodySchema} = require('../../utils/schemas/schemas')
+const { idSchema,createSchema,updateSchema} = require('../../utils/schemas/schemas')
 const validation = require('../../utils/middlewares/validateDataHandler')
 const router = express.Router()
 
@@ -25,7 +25,7 @@ router.get('/',passport.authenticate('jwt',{session:false}),async (req,res,next)
   }
 })
 
-router.get('/:id',validation({id : idSchema},'params'),async (req,res,next) => 
+router.get('/:id',passport.authenticate('jwt',{session:false}),validation({id : idSchema},'params'),async (req,res,next) => 
 {
   const { id } = req.params
   try 
@@ -42,7 +42,7 @@ router.get('/:id',validation({id : idSchema},'params'),async (req,res,next) =>
   }
 })
 
-router.post('/',validation(bodySchema),async (req,res,next) => 
+router.post('/',passport.authenticate('jwt',{session:false}),validation(createSchema),async (req,res,next) => 
 {
   const { body } = req
   try 
@@ -59,7 +59,7 @@ router.post('/',validation(bodySchema),async (req,res,next) =>
   }
 })
 
-router.put('/:id',async (req,res,next) => 
+router.put('/:id',passport.authenticate('jwt',{session:false}),validation({id : idSchema},'params'),validation(updateSchema),async (req,res,next) => 
 {
   const { id } = req.params
   const { body } = req
@@ -78,7 +78,7 @@ router.put('/:id',async (req,res,next) =>
   }
 })
 
-router.delete('/:id',async (req,res,next) => 
+router.delete('/:id',passport.authenticate('jwt',{session:false}),validation({id : idSchema},'params'),async (req,res,next) => 
 {
   const { id } = req.params
   try 
