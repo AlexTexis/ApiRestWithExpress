@@ -2,10 +2,9 @@ const express = require('express')
 const services = require('../../services/teachers')
 const serviceTeachers = new services()
 const passport = require('passport')
-const router = express.Router()
-
 const { idSchema,bodySchema} = require('../../utils/schemas/schemas')
 const validation = require('../../utils/middlewares/validateDataHandler')
+const router = express.Router()
 
 require('../../utils/auth-strategies/jwt')
 
@@ -63,11 +62,15 @@ router.post('/',validation(bodySchema),async (req,res,next) =>
 router.put('/:id',async (req,res,next) => 
 {
   const { id } = req.params
-  const {body} = req
+  const { body } = req
 
   try 
   {
-
+    const updateTeacher = await serviceTeachers.updateTeacher({id,body}) 
+    res.status(200).json({
+      payload:updateTeacher,
+      message:'teacher actualizado'
+    })
   }
   catch(err)
   {
@@ -80,7 +83,11 @@ router.delete('/:id',async (req,res,next) =>
   const { id } = req.params
   try 
   {
-
+    const deleteTeacher = await serviceTeachers.deleteTeacher({id})
+    res.status(200).json({
+      payload : deleteTeacher,
+      message : 'maestro eliminado'
+    })
   }
   catch(err)
   {

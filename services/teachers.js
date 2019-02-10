@@ -26,6 +26,18 @@ class Teachers
     const createTeacher = await this.mongo.createItem(this.collection,body)
     return createTeacher
   }
+
+  async updateTeacher({id,body})
+  {
+    const updateTeacher = await this.mongo.updateItem(this.collection,id,body)
+    return updateTeacher
+  }
+
+  async deleteTeacher({id})
+  {
+    const deleteTeacher = await this.mongo.deleteItem(this.collection,id)
+    return deleteTeacher
+  }
 }
 
 module.exports = Teachers
